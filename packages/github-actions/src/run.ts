@@ -49,26 +49,30 @@ export async function run() {
     repo,
   });
 
-  const schemaPointer = core.getInput('schema', {required: true});
+  const existingSchema = core.getInput('existing-schema', {required: true});
+  const newSchema = core.getInput('new-schema', {required: true});
 
-  if (!schemaPointer) {
-    core.error('No `schema` variable');
-    return core.setFailed('Failed to find `schema` variable');
+  if (!existingSchema) {
+    core.error('Missing `existing-schema` variable');
+    return core.setFailed('Failed to find `existing-schema` variable');
   }
 
-  const [schemaRef, schemaPath] = schemaPointer.split(':');
+  if (!newSchema) {
+    core.error('Missing `new-schema` variable');
+    return core.setFailed('Failed to find `new-schema` variable');
+  }
 
-  const oldPointer: SchemaPointer = {
-    ref: schemaRef,
-    path: schemaPath,
+  const existingPointer: SchemaPointer = {
+    path: existingSchema,
+    ref,
   };
   const newPointer: SchemaPointer = {
-    path: oldPointer.path,
+    path: newSchema,
     ref,
   };
 
   const schemas = {
-    old: buildSchema(await loadFile(oldPointer)),
+    old: buildSchema(await loadFile(existingPointer)),
     new: buildSchema(await loadFile(newPointer)),
   };
 
@@ -79,7 +83,7 @@ export async function run() {
   core.info(`Start comparing schemas`);
   actions.push(
     diff({
-      path: schemaPath,
+      path: existingSchema,
       schemas,
     }),
   );
