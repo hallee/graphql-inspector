@@ -128,7 +128,7 @@ export async function run() {
 }
 
 async function loadFile(file: {path: string}): Promise<string> {
-  return await fs.readFile(file.path, 'utf8');
+  return await fs.readFile(file.path, {encoding: 'utf8'});
 }
 
 type UpdateCheckRunOptions = Required<
