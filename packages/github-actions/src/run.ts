@@ -68,8 +68,8 @@ export async function run() {
   };
 
   const schemas = {
-    old: buildSchema(await loadFile(existingPointer)),
-    new: buildSchema(await loadFile(newPointer)),
+    old: buildSchema(loadFile(existingPointer)),
+    new: buildSchema(loadFile(newPointer)),
   };
 
   core.info(`Both schemas built`);
@@ -127,8 +127,8 @@ export async function run() {
   }
 }
 
-async function loadFile(file: {path: string}): Promise<string> {
-  return await fs.readFile(file.path, {encoding: 'utf8'});
+function loadFile(file: {path: string}): string {
+  return fs.readFileSync(file.path, {encoding: 'utf8'});
 }
 
 type UpdateCheckRunOptions = Required<
