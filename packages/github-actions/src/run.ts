@@ -11,6 +11,8 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import {ChecksUpdateParams} from '@octokit/rest';
 
+const fs = require('fs');
+
 const CHECK_NAME = 'GraphQL Inspector';
 
 export async function run() {
@@ -42,12 +44,6 @@ export async function run() {
     status: 'in_progress',
   });
   const checkId = check.data.id;
-
-  const loadFile = fileLoader({
-    octokit,
-    owner,
-    repo,
-  });
 
   const existingSchema = core.getInput('existing-schema', {required: true});
   const newSchema = core.getInput('new-schema', {required: true});
@@ -131,55 +127,8 @@ export async function run() {
   }
 }
 
-function fileLoader({
-  octokit,
-  owner,
-  repo,
-}: {
-  octokit: github.GitHub;
-  owner: string;
-  repo: string;
-}) {
-  const query = `
-    query GetFile($repo: String!, $owner: String!, $expression: String!) {
-      repository(name: $repo, owner: $owner) {
-        object(expression: $expression) {
-          ... on Blob {
-            text
-          }
-        }
-      }
-    }
-  `;
-
-  return async function loadFile(file: {
-    ref: string;
-    path: string;
-  }): Promise<string> {
-    const result = await octokit.graphql(query, {
-      repo,
-      owner,
-      expression: `${file.ref}:${file.path}`,
-    });
-    core.info(`Query ${file.ref}:${file.path} from ${owner}/${repo}`);
-
-    try {
-      if (
-        result &&
-        result.repository &&
-        result.repository.object &&
-        result.repository.object.text
-      ) {
-        return result.repository.object.text;
-      }
-
-      throw new Error('result.repository.object.text is null');
-    } catch (error) {
-      console.log(result);
-      console.error(error);
-      throw new Error(`Failed to load '${file.path}' (ref: ${file.ref})`);
-    }
-  };
+async function loadFile(file: {path: string}): Promise<string> {
+  return await fs.readFile(file.path, 'utf8');
 }
 
 type UpdateCheckRunOptions = Required<
