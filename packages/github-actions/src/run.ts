@@ -104,6 +104,8 @@ export async function run() {
     annotations.length > 1 ? 's' : ''
   }`;
 
+  core.info(`${issueInfo}`);
+
   const {title, summary} =
     conclusion === CheckConclusion.Failure
       ? {
