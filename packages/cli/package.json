@@ -31,35 +31,34 @@
     "prepublishOnly": "yarn build"
   },
   "peerDependencies": {
-    "graphql": "^14.0.0"
+    "graphql": "^14.0.0 || ^15.0.0"
   },
   "dependencies": {
     "@graphql-inspector/api": "0.0.0-PLACEHOLDER",
     "@graphql-inspector/core": "0.0.0-PLACEHOLDER",
     "@graphql-inspector/load": "0.0.0-PLACEHOLDER",
     "@graphql-inspector/ui": "0.0.0-PLACEHOLDER",
-    "apollo-server": "2.9.12",
-    "chalk": "3.0.0",
-    "commander": "4.0.1",
+    "apollo-server": "2.11.0",
+    "chalk": "4.0.0",
+    "commander": "5.0.0",
     "express": "4.17.1",
-    "figures": "3.1.0",
+    "figures": "3.2.0",
     "indent-string": "4.0.0",
     "is-valid-path": "0.1.1",
     "log-symbols": "3.0.0",
-    "open": "7.0.0"
+    "open": "7.0.3"
   },
   "devDependencies": {
-    "@types/express": "4.17.2",
+    "@types/express": "4.17.4",
     "@types/figures": "3.0.1",
-    "@types/graphql": "14.5.0",
     "@types/indent-string": "4.0.1",
-    "@types/jest": "24.0.23",
+    "@types/jest": "25.2.1",
     "@types/log-symbols": "3.0.0",
-    "@types/node": "12.12.14",
-    "graphql": "14.5.8",
-    "graphql-tag": "2.10.1",
-    "jest": "24.9.0",
-    "ts-jest": "24.2.0",
-    "typescript": "3.7.2"
+    "@types/node": "13.11.0",
+    "graphql": "15.0.0",
+    "graphql-tag": "2.10.3",
+    "jest": "25.2.7",
+    "ts-jest": "25.3.1",
+    "typescript": "3.8.3"
   }
 }
