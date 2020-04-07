@@ -3,6 +3,7 @@ import {
   ActionResult,
   CheckConclusion,
   Annotation,
+  AnnotationLevel,
   diff,
 } from '@graphql-inspector/github';
 import {buildSchema} from 'graphql';
@@ -107,14 +108,17 @@ export async function run() {
   core.info(`${issueInfo}`);
 
   const issues = annotations.reduce( function (errorMessage, annot) { 
-    return `${errorMessage}${annot.message}\n`;
+    if ( annot.annotation_level === AnnotationLevel.Failure ) {
+      return `${errorMessage}${annot.title ?? annot.message}\n`;
+    }
+    return errorMessage
   }, '')
   core.info(`${issues}`);
 
   const {title, summary} =
     conclusion === CheckConclusion.Failure
       ? {
-          title: `Something is wrong with your schema: ${issueInfo}\n${issues}`,
+          title: `${issueInfo} with your schema:\n${issues}`,
           summary: issueInfo,
         }
       : {
