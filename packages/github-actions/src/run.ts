@@ -107,7 +107,7 @@ export async function run() {
   core.info(`${issueInfo}`);
 
   const issues = annotations.reduce( function (errorMessage, annot) { 
-    return errorMessage + annot.message + '\n';
+    return `${errorMessage}${annot.message}\n`;
   }, '')
   core.info(`${issues}`);
 
