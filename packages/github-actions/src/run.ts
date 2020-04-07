@@ -1,15 +1,15 @@
-import {SchemaPointer} from '@graphql-inspector/github/dist/probot';
 import {
+  SchemaPointer,
   ActionResult,
   CheckConclusion,
   Annotation,
-} from '@graphql-inspector/github/dist/types';
-import {diff} from '@graphql-inspector/github/dist/diff';
+  diff,
+} from '@graphql-inspector/github';
 import {buildSchema} from 'graphql';
 
-import * as core from '@actions/core';
-import * as github from '@actions/github';
-import {ChecksUpdateParams} from '@octokit/rest';
+import core from '@actions/core';
+import github from '@actions/github';
+import {Octokit} from '@octokit/rest';
 
 const fs = require('fs');
 
@@ -106,10 +106,15 @@ export async function run() {
 
   core.info(`${issueInfo}`);
 
+  const issues = annotations.reduce( function (errorMessage, annot) { 
+    return errorMessage + annot.message + '\n';
+  }, '')
+  core.info(`${issues}`);
+
   const {title, summary} =
     conclusion === CheckConclusion.Failure
       ? {
-          title: `Something is wrong with your schema: ${issueInfo} ${annotations}`,
+          title: `Something is wrong with your schema: ${issueInfo}\n${issues}`,
           summary: issueInfo,
         }
       : {
@@ -134,7 +139,7 @@ function loadFile(file: {path: string}): string {
 }
 
 type UpdateCheckRunOptions = Required<
-  Pick<ChecksUpdateParams, 'conclusion' | 'output'>
+  Pick<Octokit.ChecksUpdateParams, 'conclusion' | 'output'>
 >;
 async function updateCheckRun(
   octokit: github.GitHub,
