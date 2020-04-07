@@ -7,7 +7,7 @@ import {
 } from '@graphql-inspector/github';
 import {buildSchema} from 'graphql';
 
-import core from '@actions/core';
+import * as core from '@actions/core';
 import github from '@actions/github';
 import {Octokit} from '@octokit/rest';
 
