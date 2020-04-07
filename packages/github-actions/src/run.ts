@@ -8,7 +8,7 @@ import {
 import {buildSchema} from 'graphql';
 
 import * as core from '@actions/core';
-import github from '@actions/github';
+import * as github from '@actions/github';
 import {Octokit} from '@octokit/rest';
 
 const fs = require('fs');
