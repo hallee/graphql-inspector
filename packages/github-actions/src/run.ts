@@ -1,15 +1,16 @@
-import {SchemaPointer} from '@graphql-inspector/github/dist/probot';
 import {
+  SchemaPointer,
   ActionResult,
   CheckConclusion,
   Annotation,
-} from '@graphql-inspector/github/dist/types';
-import {diff} from '@graphql-inspector/github/dist/diff';
+  AnnotationLevel,
+  diff,
+} from '@graphql-inspector/github';
 import {buildSchema} from 'graphql';
 
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import {ChecksUpdateParams} from '@octokit/rest';
+import {Octokit} from '@octokit/rest';
 
 const fs = require('fs');
 
@@ -76,7 +77,7 @@ export async function run() {
 
   const actions: Array<Promise<ActionResult>> = [];
 
-  core.info(`Start comparing schemas`);
+  core.info(`Comparing schemas...`);
   actions.push(
     diff({
       path: existingSchema,
@@ -100,19 +101,23 @@ export async function run() {
     return annotations;
   }, []);
 
-  const issueInfo = `Found ${annotations.length} issue${
-    annotations.length > 1 ? 's' : ''
-  }`;
+  const issues = annotations.reduce( function (errorMessage, annot) { 
+    if ( annot.annotation_level === AnnotationLevel.Failure ) {
+      return `${errorMessage}${annot.title ?? annot.message}\n`;
+    }
+    return errorMessage
+  }, '')
+  core.info(`Found issues with your schema:\n${issues}`);
 
   const {title, summary} =
     conclusion === CheckConclusion.Failure
       ? {
-          title: `Something is wrong with your schema: ${issueInfo} ${annotations}`,
-          summary: issueInfo,
+          title: `Found issues with your schema:\n${issues}`,
+          summary: issues,
         }
       : {
           title: 'Everything looks good',
-          summary: issueInfo,
+          summary: issues,
         };
 
   try {
@@ -132,7 +137,7 @@ function loadFile(file: {path: string}): string {
 }
 
 type UpdateCheckRunOptions = Required<
-  Pick<ChecksUpdateParams, 'conclusion' | 'output'>
+  Pick<Octokit.ChecksUpdateParams, 'conclusion' | 'output'>
 >;
 async function updateCheckRun(
   octokit: github.GitHub,

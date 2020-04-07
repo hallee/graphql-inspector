@@ -1,5 +1,4 @@
 {
-  "name": "@graphql-inspector/cli",
   "private": true,
   "description": "Tooling for GraphQL. Compare GraphQL Schemas, check documents, find breaking changes, find similar types.",
   "keywords": [
@@ -38,19 +37,19 @@
     "precommit": "lint-staged"
   },
   "devDependencies": {
-    "lint-staged": "9.5.0",
-    "prettier": "1.19.1",
-    "ts-loader": "6.2.1",
-    "webpack": "4.41.2",
-    "webpack-cli": "3.3.10"
+    "lint-staged": "10.1.2",
+    "prettier": "2.0.4",
+    "ts-loader": "6.2.2",
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11"
   },
   "dependencies": {
-    "@probot/serverless-lambda": "0.3.0",
-    "babel-loader": "8.0.6",
+    "@probot/serverless-lambda": "0.5.0",
+    "babel-loader": "8.1.0",
     "graphql-request": "1.8.2",
-    "husky": "3.1.0",
-    "immer": "5.0.0",
-    "lerna": "3.19.0",
+    "husky": "4.2.3",
+    "immer": "6.0.3",
+    "lerna": "3.20.2",
     "shelljs": "0.8.3"
   },
   "workspaces": [
@@ -67,6 +66,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "resolutions": {
+    "@types/express": "4.17.4"
   },
   "engines": {
     "node": ">= 10.x"

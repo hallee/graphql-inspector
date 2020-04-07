@@ -2,7 +2,10 @@
 
 ### vNEXT
 
-- **core** **cli** introduce `keepClientFields` flag in `validate` [PR #783](https://github.com/kamilkisiela/graphql-inspector/pull/783)
+### v1.27.0
+
+- **core** **cli**: introduce `keepClientFields` flag in `validate` [PR #783](https://github.com/kamilkisiela/graphql-inspector/pull/783)
+- **core**: `UNION_MEMBER_ADDED` is no longer a breaking change but dangerous
 
 ### v1.26.0
 
