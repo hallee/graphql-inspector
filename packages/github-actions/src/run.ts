@@ -107,7 +107,9 @@ export async function run() {
     }
     return errorMessage
   }, '')
-  core.info(`Found issues with your schema:\n${issues}`);
+  if ( issues.length > 0 ) {
+    core.info(`Found issues with your schema:\n${issues}`);
+  }
 
   const {title, summary} =
     conclusion === CheckConclusion.Failure
