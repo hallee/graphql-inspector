@@ -107,7 +107,7 @@ export async function run() {
   const {title, summary} =
     conclusion === CheckConclusion.Failure
       ? {
-          title: `Something is wrong with your schema`,
+          title: `Something is wrong with your schema: ${issueInfo} ${annotations}`,
           summary: issueInfo,
         }
       : {
