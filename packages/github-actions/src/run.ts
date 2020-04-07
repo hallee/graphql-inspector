@@ -76,7 +76,7 @@ export async function run() {
 
   const actions: Array<Promise<ActionResult>> = [];
 
-  core.info(`Start comparing schemas`);
+  core.info(`Comparing schemas...`);
   actions.push(
     diff({
       path: existingSchema,
