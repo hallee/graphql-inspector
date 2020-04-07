@@ -101,29 +101,23 @@ export async function run() {
     return annotations;
   }, []);
 
-  const issueInfo = `Found ${annotations.length} issue${
-    annotations.length > 1 ? 's' : ''
-  }`;
-
-  core.info(`${issueInfo}`);
-
   const issues = annotations.reduce( function (errorMessage, annot) { 
     if ( annot.annotation_level === AnnotationLevel.Failure ) {
       return `${errorMessage}${annot.title ?? annot.message}\n`;
     }
     return errorMessage
   }, '')
-  core.info(`${issues}`);
+  core.info(`Found issues with your schema:\n${issues}`);
 
   const {title, summary} =
     conclusion === CheckConclusion.Failure
       ? {
-          title: `${issueInfo} with your schema:\n${issues}`,
-          summary: issueInfo,
+          title: `Found issues with your schema:\n${issues}`,
+          summary: issues,
         }
       : {
           title: 'Everything looks good',
-          summary: issueInfo,
+          summary: issues,
         };
 
   try {
